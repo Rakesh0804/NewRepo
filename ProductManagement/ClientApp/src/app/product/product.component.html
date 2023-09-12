@@ -1,0 +1,112 @@
+<h1 id="tableLabel">Product</h1>
+<br />
+
+<p *ngIf="!ProductList?.length"><em>Loading...</em></p>
+
+
+<div class="container" *ngIf="ProductList?.length">
+  <div class="row">
+    <div class="col-lg">
+      <div class="input-group">
+      <div class="form-outline">
+        <input id="search-input" type="search" name="search" class="form-control"
+          [(ngModel)]="searchterm" (keypress)="omit_special_char($event)" minlength="2" maxlength="30" placeholder="Search" />
+      </div>
+      <button id="search-button" type="button" class="btn btn-primary" (click)="searchProduct()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    </div>
+    <div class="col-4">
+      <button *ngIf="ProductList?.length" type="button" class="btn btn-primary m-2 float-end"
+          data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="addClick()">Add Product
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<br />
+
+
+<!-- Table -->
+<table class="table table-striped" *ngIf="ProductList?.length">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Sub Category</th>
+      <th>Prod. Code</th>
+      <th>Prod. Name</th>
+      <th>Description</th>
+      <th>Image</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let dataItem of ProductList">
+      <td>{{dataItem.categoryName}}</td>
+      <td>{{dataItem.subCategoryName}}</td>
+      <td>{{dataItem.code}}</td>
+      <td>{{dataItem.name}}</td>
+      <td>{{dataItem.description}}</td>
+      <td><img [src]="dataItem.image" class="flag-img" alt="img"></td>
+      <td>
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                (click)="editClick(dataItem)" data-backdrop="static" data-keyboard="false">Edit</button>
+        <button type="button" class="btn btn-outline-danger ms-1" (click)="deleteClick(deleteInventoryModal,dataItem)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<nav aria-label="..." *ngIf="ProductList?.length">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="#">2</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ModalTitle}}</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" (click)="closeClick()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-product [prod]="prod" *ngIf="ActivateAddEditprodComp">
+        </app-add-edit-product>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete Modal -->
+<ng-template #deleteInventoryModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="deleteModal">Delete Product</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure to delete <strong>{{var_productName}}</strong> ?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('No')">No</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Yes')">Yes</button>
+  </div>
+</ng-template>

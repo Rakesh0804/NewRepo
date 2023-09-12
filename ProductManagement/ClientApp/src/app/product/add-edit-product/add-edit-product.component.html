@@ -1,0 +1,65 @@
+<div class="d-flex flex-row bd-highlight mb-3">
+  <div class="p-2 w-50 bd-highlight">
+    <div class="input-group mb-3">
+      <span class="input-group-text">Category</span>
+      <select class="form-select" [(ngModel)]="fK_CategoryId" (change)="getSubCategory(fK_CategoryId)" required>
+        <option value="0">--Select--</option>
+        <option *ngFor="let categ of CategorytList" [ngValue]="categ.id">
+          {{categ.name}}
+        </option>
+      </select>
+    </div>
+    <div class="input-group mb-3" *ngIf="fK_CategoryId>0">
+      <span class="input-group-text">Sub Category</span>
+      <select class="form-select" [(ngModel)]="fK_SubCategoryId" required>
+        <option value="0">--Select--</option>
+        <option *ngFor="let subcateg of SubCategorytList" [ngValue]="subcateg.id">
+          {{subcateg.name}}
+        </option>
+      </select>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Code</span>
+      <input type="text" class="form-control" [(ngModel)]="code" required>
+    </div>    
+    <div class="input-group mb-3">
+      <span class="input-group-text">Name</span>
+      <input type="text" class="form-control" [(ngModel)]="name" required>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Description</span>
+      <input type="text" class="form-control" [(ngModel)]="description">
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Price (Rs.)</span>
+      <input type="text" class="form-control" [(ngModel)]="price">
+    </div> 
+  </div>
+  <div class="p-2 w-50 bd-highlight">
+    <img width="250px" height="250px" [src]="PhotoFilePath" />
+    <input class="m-2" type="file" (change)="uploadPhoto($event)" required>
+  </div>
+</div>
+<button type="button" (click)="addProduct(InfoModal)" *ngIf="prod.id=='0'" class="btn btn-primary">
+  Create
+</button>
+
+<button type="button" (click)="updateProduct(InfoModal)" *ngIf="prod.id!='0'" class="btn btn-primary">
+  Update
+</button>
+
+
+<!-- Delete Modal -->
+<ng-template #InfoModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="deleteModal">{{modalTitle}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>{{message}}</strong></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="modal.dismiss('OK')">OK</button>
+  </div>
+</ng-template>

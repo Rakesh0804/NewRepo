@@ -68,7 +68,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 //for the wwwroot/ uploads folder
-string uploadsDir = Path.Combine(app.Environment.WebRootPath, "Images");
+string uploadsDir = Path.Combine(app.Environment.WebRootPath, "images");
 if (!Directory.Exists(uploadsDir))
     Directory.CreateDirectory(uploadsDir);
 

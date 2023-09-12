@@ -1,0 +1,136 @@
+<h1 id="tableLabel">Inventory</h1>
+
+
+<p *ngIf="!inventoryList?.length"><em>Loading...</em></p>
+<button *ngIf="inventoryList?.length" type="button" class="btn btn-primary m-2 float-end" (click)="addClick(addeditInventoryModal)">
+  Add Inventory
+</button>
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="inventoryList.length">
+  <thead>
+    <tr>
+      <th>Product Code</th>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Description</th>
+      <!--<th>Image</th>-->
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let inventory of inventoryList">
+      <td>{{ inventory.code }}</td>
+      <td>{{ inventory.productName }}</td>
+      <td [ngClass]="{'greenBackground': inventory.quantity >=100, 'orangeBackground': inventory.quantity <100, 'redBackground': inventory.quantity < 10}">{{ inventory.quantity }}</td>
+      <td>{{ inventory.price }}</td>
+      <td>{{ inventory.description }}</td>
+      <!--<td><img [src]="imageURL" class="flag-img" alt="img"></td>-->
+      <td>
+        <button type="button" class="btn btn-outline-primary" (click)="editInventory(addeditInventoryModal,inventory)">Edit</button>
+        <button type="button" class="btn btn-outline-danger ms-1" (click)="deleteInventory(deleteInventoryModal,inventory)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<nav aria-label="..." *ngIf="inventoryList.length">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="#">2</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
+
+
+<!-- Edit Modal -->
+<ng-template #addeditInventoryModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="addeditModal">{{ModalTitle}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <!--<span aria-hidden="true">×</span>-->
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="input-group mb-3" *ngIf="ddlFlag">
+        <span class="input-group-text">Product</span>
+        <select class="form-select" name="ProdSelectDDL" [(ngModel)]="selectedProductId" (change)="setSelectedProduct()">
+          <option value="0">--Select--</option>
+          <option *ngFor="let prod of productList" [ngValue]="prod.id">
+            {{prod.name}}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="productCode">Product Code</label>
+        <input type="text" class="form-control" [disabled]="editInventoryFlag" name="productCode" id="productCode" [(ngModel)]="var_productCode">
+      </div>
+      <div class="mb-3">
+        <label for="productName">Product Name</label>
+        <input type="text" class="form-control" [disabled]="editInventoryFlag" name="productName" id="productName" [(ngModel)]="var_productName">
+      </div>
+      <div class="mb-3">
+        <label for="price">Price</label>
+        <input type="text" class="form-control" [disabled]="editInventoryFlag" name="price" id="price" [(ngModel)]="var_price">
+      </div>
+      <div class="mb-3">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" [disabled]="editInventoryFlag" name="description" id="description" [(ngModel)]="var_description">
+      </div>
+
+      <div class="mb-3">
+        <label for="quantity">Quantiry</label>
+        <input type="text" class="form-control" name="quantity" id="quantity" [(ngModel)]="var_quantity">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close')">Close</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save')">Save</button>
+  </div>
+</ng-template>
+
+
+
+<!-- Delete Modal -->
+<ng-template #deleteInventoryModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="deleteModal">Delete Inventory</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <!--<span aria-hidden="true">×</span>-->
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you Sure to Delete inventory record of <strong>{{var_productName}}</strong> ?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('No')">No</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Yes')">Yes</button>
+  </div>
+</ng-template>
+
+
+
+<!-- Info Modal -->
+<ng-template #infoModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="infoModal">Information</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <!--<span aria-hidden="true">×</span>-->
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>{{infoMsg}}</strong></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-warning"(click)="modal.close('Cancel')">Cancel</button>
+  </div>
+</ng-template>
